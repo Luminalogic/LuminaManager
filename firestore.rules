@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+         request.auth.token.email == "holasoylasunny@gmail.com");
+    }
+
+    // Allow admins full access to everything
+    match /{document=**} {
+      allow read, write: if isAdmin();
+    }
+
+    // Leads can be created by anyone (from the landing page)
+    match /leads/{leadId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Appointments can be created by anyone (from the landing page)
+    match /appointments/{appointmentId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+    
+    // Other collections are admin only (already covered by the wildcard match)
+  }
+}

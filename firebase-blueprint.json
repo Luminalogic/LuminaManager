@@ -1,0 +1,114 @@
+{
+  "entities": {
+    "Lead": {
+      "title": "Lead",
+      "description": "A potential client who contacted the agency.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "type": { "type": "string", "enum": ["software-medida", "micro-saas", "analisis-datos", "automatizacion", "otro"] },
+        "message": { "type": "string" },
+        "status": { "type": "string", "enum": ["new", "contacted", "qualified", "lost", "converted"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "type", "status", "createdAt"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "A project for a client.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "clientId": { "type": "string" },
+        "status": { "type": "string", "enum": ["planning", "development", "testing", "completed", "maintenance"] },
+        "budgetedHours": { "type": "number" },
+        "investedHours": { "type": "number" },
+        "setupFee": { "type": "number" },
+        "mrr": { "type": "number" },
+        "startDate": { "type": "string", "format": "date" },
+        "endDate": { "type": "string", "format": "date" },
+        "type": { "type": "string", "enum": ["custom", "micro-saas"] }
+      },
+      "required": ["name", "clientId", "status", "budgetedHours", "investedHours", "setupFee", "mrr", "type"]
+    },
+    "FinancialRecord": {
+      "title": "Financial Record",
+      "description": "A record of a payment or expense.",
+      "type": "object",
+      "properties": {
+        "projectId": { "type": "string" },
+        "type": { "type": "string", "enum": ["setup", "mrr", "expense"] },
+        "amount": { "type": "number" },
+        "date": { "type": "string", "format": "date" },
+        "status": { "type": "string", "enum": ["pending", "paid", "cancelled"] }
+      },
+      "required": ["projectId", "type", "amount", "date", "status"]
+    },
+    "Appointment": {
+      "title": "Appointment",
+      "description": "A scheduled meeting with a lead or client.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "date": { "type": "string", "format": "date" },
+        "time": { "type": "string" },
+        "type": { "type": "string", "enum": ["online", "presencial"] },
+        "status": { "type": "string", "enum": ["scheduled", "completed", "cancelled"] }
+      },
+      "required": ["name", "email", "date", "time", "type", "status"]
+    },
+    "ProductCost": {
+      "title": "Product Cost",
+      "description": "A calculation of a product cost and margin.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "baseCost": { "type": "number" },
+        "margin": { "type": "number" },
+        "finalPrice": { "type": "number" },
+        "details": { "type": "string" }
+      },
+      "required": ["name", "baseCost", "margin", "finalPrice"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "A task within a project.",
+      "type": "object",
+      "properties": {
+        "projectId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "assignedTo": { "type": "string" },
+        "startDate": { "type": "string", "format": "date" },
+        "endDate": { "type": "string", "format": "date" },
+        "status": { "type": "string", "enum": ["pending", "in-progress", "completed"] }
+      },
+      "required": ["projectId", "title", "assignedTo", "status"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "A system notification for a user.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "type": { "type": "string", "enum": ["lead", "task-deadline", "payment-pending", "payment-confirmed"] },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "type", "title", "message", "read", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/leads": { "schema": "Lead", "description": "Collection of leads." },
+    "/projects": { "schema": "Project", "description": "Collection of projects." },
+    "/financial_records": { "schema": "FinancialRecord", "description": "Collection of financial records." },
+    "/appointments": { "schema": "Appointment", "description": "Collection of appointments." },
+    "/product_costs": { "schema": "ProductCost", "description": "Collection of product cost calculations." },
+    "/tasks": { "schema": "Task", "description": "Collection of project tasks." },
+    "/notifications": { "schema": "Notification", "description": "Collection of user notifications." }
+  }
+}

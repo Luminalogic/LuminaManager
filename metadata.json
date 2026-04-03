@@ -1,0 +1,5 @@
+{
+  "name": "Lumina Agency Manager",
+  "description": "Internal management software for Lumina agency to manage leads, projects, finances, and analytics.",
+  "requestFramePermissions": []
+}
